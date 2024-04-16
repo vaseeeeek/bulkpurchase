@@ -1,0 +1,94 @@
+.bulkpurchase-frontend .bulkpurchase-products-table,
+.bulkpurchase-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bulkpurchase-frontend .bulkpurchase-products-table th,
+.bulkpurchase-frontend .bulkpurchase-products-table td,
+.bulkpurchase-modal-table th,
+.bulkpurchase-modal-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.bulkpurchase-frontend .bulkpurchase-products-table th,
+.bulkpurchase-modal-table th {
+  background-color: #f2f2f2;
+}
+
+.bulkpurchase-frontend .bulkpurchase-products-table tbody tr:nth-child(odd),
+.bulkpurchase-modal-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.bulkpurchase-modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Removed the duplicate, kept RGBA for transparency */
+}
+
+.bulkpurchase-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.bulkpurchase-close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.bulkpurchase-close-modal:hover,
+.bulkpurchase-close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.bulkpurchase-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.bulkpurchase-tab-button {
+    background-color: #f1f1f1;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    margin: 0 5px;
+    line-height: 1;
+    opacity: 0.6; /* Default state */
+}
+
+.bulkpurchase-tab-button.bulkpurchase-active,
+.bulkpurchase-tab-button:hover {
+    background-color: #007bff;
+    color: #ffffff;
+    opacity: 1; /* Active & hover state */
+}
+
+.bulkpurchase-tab-button:not(:first-child) {
+    border-left: 1px solid #ccc;
+}
+
+.bulkpurchase-tab-content {
+    display: none;
+    padding: 20px 0;
+    border-top: none;
+}

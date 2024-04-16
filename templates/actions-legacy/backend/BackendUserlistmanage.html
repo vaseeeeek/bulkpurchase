@@ -1,0 +1,41 @@
+
+<link rel="stylesheet" href="{$plugin_url}/css/bulkpurchase.css">
+<style></style>
+
+<div class="bulkpurchase-backend">
+    <h1>Управление массовыми покупками</h1>
+
+    <!-- Поиск покупателя -->
+    <div class="field">
+        <label for="customer_search">ID покупателя:</label>
+        <input type="text" id="customer_search" name="customer_search" placeholder="Введите ID покупателя">
+        <div id="customer_search_results" class="search-results" style="display:none"></div>
+    </div>
+
+    <!-- Отображение выбранного покупателя -->
+    <div id="selected_customer_display" class="selected-customer" style="display: none;"></div>
+    <input type="hidden" id="selected_customer_id" name="selected_customer_id">
+
+    <!-- Список товаров выбранного покупателя -->
+    <div id="customer_products_list"></div>
+
+    <!-- Добавление товаров -->
+    <div class="add-products">
+        <label for="product_search">Добавить товар по ID или наименованию:</label>
+        <input type="text" id="product_search" placeholder="Введите ID товара">
+        <div id="product_search_results" style="display: none;"></div>
+
+        <!-- Отображение выбранного продукта -->
+        <div id="selected_product_display" class="selected-product" style="display: none;"></div>
+        <input type="hidden" id="selected_product_id" name="selected_product_id">
+        {*
+        <label for="category_select">Добавить товары из категории:</label>
+        <select id="category_select" name="category">
+            <option value="">Выберите категорию...</option>
+            <!-- Здесь будут динамически добавлены категории через JavaScript -->
+        </select>
+        *}
+    </div>
+</div>
+
+<script src="{$plugin_url}/js/bulkpurchase.js"></script>

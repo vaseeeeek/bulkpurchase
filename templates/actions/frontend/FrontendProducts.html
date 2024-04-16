@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css">
+
+{if !empty($products)}
+    <table class="bulkpurchase-products-table">
+        <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th>Цена за штуку</th>
+                <th>Остаток на складе Москва</th>
+                <th>Заказ со склада в Москве количество штук</th>
+                <th>Всего по артикулу рублей</th>
+                <th>Поступающие товары Франция количество штук</th>
+                <th>Заказ на поступление штук</th>
+                <th>Всего по артикулу рублей</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $products as $product}
+                {$stockMsc = $product['skus'][$product['id']]['stock'][1]}
+                {$stockFr = $product['skus'][$product['id']]['stock'][2]}
+                <tr data-product-id={$product.id}>
+                    <td class="js-product-art">{$product['skus'][$product['id']]['sku']}</td>
+                    <td class="js-product-name">{$product->name}</td>
+                    <td class="js-product-price" data-price="{$product['price']}">{shop_currency($product['price'], 'RUB', null, true)}</td>
+                    <td class="js-product-stock-msk" data-stock-msk="{$stockMsc}">{if $stockMsc == NULL}Много{else}{$stockMsc}{/if}</td>
+                    <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product->id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
+                    <td class="js-product-total-msk">—</td>
+                    <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
+                    <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product->id}]" min="0" {if $stockFr != NULL}max="{$stockFr}"{/if} value="0"></td>
+                    <td class="js-product-total-fr">—</td>
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+
+    <!-- Кнопка, вызывающая модальное окно -->
+    <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Оформить заказ</button>
+
+    <!-- Модальное окно -->
+    <div id="bulkpurchase-orderModal" class="bulkpurchase-modal" style="display: none;">
+        <div class="bulkpurchase-modal-content">
+            <span class="bulkpurchase-close-modal">&times;</span>
+            <h2>Оформление заказа</h2>
+            
+            <!-- Вкладки -->
+            <div class="bulkpurchase-tabs">
+                <button class="bulkpurchase-tab-button bulkpurchase-active" data-for-tab="1">Москва</button>
+                <button class="bulkpurchase-tab-button" data-for-tab="2">Франция</button>
+            </div>
+            
+            <!-- Содержимое вкладок -->
+            <div class="bulkpurchase-tab-content" data-tab="1">
+                <!-- Содержимое для заказа из Москвы -->
+            </div>
+            <div class="bulkpurchase-tab-content" data-tab="2" style="display: none;">
+                <!-- Содержимое для заказа из Франции -->
+            </div>
+
+            <!-- Кнопка "Заказать", вызывающая функцию отправки заказа на сервер -->
+            <div class="bulkpurchase-order-button-container">
+                <button id="bulkpurchase-place-order" class="bulkpurchase-order-button">Заказать</button>
+            </div>
+        </div>
+    </div>
+
+{else}
+    <div class="bulkpurchase-no-products">Нет доступных товаров.</div>
+{/if}
+
+
+
+
+
+<script src="{$plugin_url}/js/FrontendProducts.js"></script>
