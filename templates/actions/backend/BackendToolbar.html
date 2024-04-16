@@ -1,0 +1,288 @@
+<style>
+:root {
+    --bulkpurchase-bg-modal: rgba(0,0,0,0.4);
+    --bulkpurchase-bg-content: #fff;
+    --bulkpurchase-bg-button: #5cb85c;
+    --bulkpurchase-bg-button-hover: #4cae4c;
+    --bulkpurchase-bg-selected: #e2e2ff;
+    --bulkpurchase-bg-results: #f9f9f9;
+    --bulkpurchase-border-radius: 4px;
+    --bulkpurchase-border: 1px solid #ccc;
+    --bulkpurchase-color-close: #888;
+    --bulkpurchase-color-close-hover: #333;
+    --bulkpurchase-text-color: #333;
+    --bulkpurchase-padding: 10px;
+    --bulkpurchase-margin-top: 10px;
+}
+
+.bulkpurchase-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 132;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--bulkpurchase-bg-modal);
+}
+
+.bulkpurchase-modal-content {
+    background-color: var(--bulkpurchase-bg-content);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+}
+
+.bulkpurchase-close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--bulkpurchase-color-close);
+    margin: -10px -10px 0 0;
+}
+
+.bulkpurchase-close:hover {
+    color: var(--bulkpurchase-color-close-hover);
+}
+
+#bulkpurchase-selected-products {
+    background: #f8f8f8;
+    border-radius: var(--bulkpurchase-border-radius);
+    padding: var(--bulkpurchase-padding);
+    margin-top: var(--bulkpurchase-margin-top);
+}
+
+#bulkpurchase-selected-products-list {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#bulkpurchase-selected-products-list li {
+    padding: 8px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 5px;
+}
+
+#bulkpurchase-selected-products-list li:last-child {
+    border-bottom: none;
+}
+
+#bulkpurchase-customer-search, #bulkpurchase-search-customer, #bulkpurchase-add-products {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: var(--bulkpurchase-margin-top);
+    box-sizing: border-box;
+    border: var(--bulkpurchase-border);
+    border-radius: var(--bulkpurchase-border-radius);
+}
+
+#bulkpurchase-search-customer, #bulkpurchase-add-products {
+    background-color: var(--bulkpurchase-bg-button);
+    color: white;
+    border-color: var(--bulkpurchase-bg-button-hover);
+    cursor: pointer;
+}
+
+#bulkpurchase-search-customer:hover, #bulkpurchase-add-products:hover {
+    background-color: var(--bulkpurchase-bg-button-hover);
+}
+
+#bulkpurchase-search-results {
+    max-height: 150px;
+    overflow-y: auto;
+    background: var(--bulkpurchase-bg-results);
+    border-radius: var(--bulkpurchase-border-radius);
+    border: var(--bulkpurchase-border);
+    padding: var(--bulkpurchase-padding);
+    margin-top: var(--bulkpurchase-margin-top);
+}
+
+#bulkpurchase-search-results div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+#bulkpurchase-search-results div:hover {
+    background-color: #e1e1e1;
+}
+
+#selected_customer_display {
+    color: var(--bulkpurchase-text-color);
+    background: var(--bulkpurchase-bg-selected);
+    padding: 8px;
+    border-radius: var(--bulkpurchase-border-radius);
+    margin-top: var(--bulkpurchase-margin-top);
+    display: block;
+}
+
+
+</style>
+
+<div id="bulkpurchase-toolbar" class="block">
+  <h6 class="heading">Добавить товары к покупателю</h6>
+  <ul class="menu-v compact p-no-photo-selected123 thumbs-view-menu">
+    <li>
+      <a id="bulkpurchase--add-product" href="#">Добавить</a>
+    </li>
+  </ul>
+</div>
+<!-- Модальное окно для добавления товаров -->
+<div id="bulkpurchase-modal" class="bulkpurchase-modal" style="display:none;">
+    <div class="bulkpurchase-modal-content">
+        <span class="bulkpurchase-close">&times;</span>
+        <h2>Добавить товары к покупателю</h2>
+        <input type="text" id="bulkpurchase-customer-search" placeholder="Введите ID{* или имя*} покупателя">
+        <button id="bulkpurchase-search-customer">Поиск</button>
+        <input type="hidden" id="selected_customer_id" name="selected_customer_id">
+        <div id="bulkpurchase-search-results" style="display: none;"></div>
+        <div id="selected_customer_display" class="selected-customer" style="display: none;"></div>
+        
+        <!-- Место в HTML документе, где будут отображаться выбранные товары -->
+        <div id="bulkpurchase-selected-products" class="selected-products" style="display: none;">
+            <h3>Выбранные товары:</h3>
+            <ul id="bulkpurchase-selected-products-list"></ul>
+        </div>
+
+        <button id="bulkpurchase-add-products">Добавить выбранные товары</button>
+    </div>
+</div>
+
+{literal}
+<script>
+    $(document).ready(function () {
+        // Открытие модального окна
+        $('#bulkpurchase--add-product').click(function() {
+            updateSelectedProductsList();
+            $('#bulkpurchase-modal').show();
+        });
+
+        // Закрытие модального окна
+        $('.bulkpurchase-close').click(function() {
+            $('#bulkpurchase-modal').hide();
+        });
+
+        $('#bulkpurchase-customer-search').on('input', function () {
+            var searchTerm = $(this).val();
+            if (searchTerm.length < 1) {
+                $('#bulkpurchase-search-results').empty();
+                updateSearchResultsVisibility();
+                return;
+            } 
+
+            $.ajax({
+                url: '?plugin=bulkpurchase&action=searchcustomer&search_term=' + encodeURIComponent(searchTerm),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var resultsDiv = $('#bulkpurchase-search-results');
+                    resultsDiv.empty(); // Clear previous results
+
+                    $.each(data.customers, function (i, customer) {
+                        if (!customer.name.trim()) {
+                            customer.name = 'Не определено'; // Замена имени если его нет
+                        }
+                        $('<div>').text(`[ID:${customer.id}] ${customer.name}`)
+                            .on('click', function () { selectCustomer(customer.id, customer.name); })
+                            .appendTo(resultsDiv);
+                    });
+                    updateSearchResultsVisibility();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            }).always(function() {
+                // Гарантируем, что функция вызывается даже если AJAX запрос завершился ошибкой
+                updateSearchResultsVisibility();
+            });
+        });
+
+        // Фанкщин выбора покупателя
+        function selectCustomer(customerId, customerName) {
+            $('#selected_customer_display').text(`Выбранный покупатель: ${customerName} (ID: ${customerId})`);
+            $('#selected_customer_id').val(customerId);
+            // Показываем блок с выбранным покупателем
+            $('#selected_customer_display').show();
+            $('#bulkpurchase-search-results').empty(); // Очистка поиска
+            
+            updateSearchResultsVisibility();
+        }
+    
+        function updateSearchResultsVisibility() {
+            var $searchResults = $('#bulkpurchase-search-results');
+            console.log($searchResults.html());
+            if ($searchResults.html().trim() === '') {
+                // Если результаты поиска пусты, скрываем блок
+                $searchResults.hide();
+            } else {
+                // Если в блоке есть контент, отображаем его
+                $searchResults.show();
+            }
+        }
+
+        // Обновление списка выбранных товаров
+        function updateSelectedProductsList() {
+            var selectedProducts = [];
+            $('#product-list input[type="checkbox"]:checked').each(function() {
+                var productId = $(this).closest('tr').data('product-id');
+                var productName = $(this).closest('tr').find('.s-product-name div').text().trim();
+                selectedProducts.push({id: productId, name: productName});
+            });
+
+            var $list = $('#bulkpurchase-selected-products-list');
+            $list.empty();
+            selectedProducts.forEach(function(product) {
+                $list.append(`<li>${product.name} (ID: ${product.id})</li>`);
+            });
+            $('#bulkpurchase-selected-products').toggle(selectedProducts.length > 0);
+        }
+
+        // Подтверждение выбранных товаров и отправка данных на сервер
+        $('#bulkpurchase-add-products').click(function() {
+            var customerId = $('#selected_customer_id').val();
+            if (!customerId) {
+                alert('Пожалуйста, выберите покупателя.');
+                return;
+            }
+
+            var productIds = $('#product-list input[type="checkbox"]:checked').map(function() {
+                return $(this).closest('tr').data('product-id');
+            }).get();
+
+            if (productIds.length === 0) {
+                alert('Нет выбранных товаров.');
+                return;
+            }
+
+            $.ajax({
+                url: '?plugin=bulkpurchase&action=addproducts',
+                type: 'POST',
+                data: {
+                    customer_id: customerId,
+                    product_ids: productIds
+                },
+                success: function(response) {
+                    if (response.status === 'ok') {
+                        alert('Товары успешно добавлены.');
+                        //$('#product-list input[type="checkbox"]').prop('checked', false);
+                        $('.bulkpurchase-modal').hide();
+                    } else {
+                        alert('Ошибка: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Ошибка при отправке запроса.');
+                }
+            });
+        });
+    });
+
+    
+</script>
+{/literal}

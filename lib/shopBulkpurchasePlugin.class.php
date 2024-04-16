@@ -8,4 +8,11 @@ class shopBulkpurchasePlugin extends shopPlugin
             'core_li' => '<li class="no-tab"><a href="?plugin=bulkpurchase&action=userlistmanage">' . _wp('Покупки в опт') . '</a></li>',
         );
     }
+    public function backendProducts()
+    {
+      $view = wa()->getView();
+      return [
+        'toolbar_section' => $view->fetch($this->path . '/templates/actions/backend/BackendToolbar.html'),
+      ];
+    }
 }

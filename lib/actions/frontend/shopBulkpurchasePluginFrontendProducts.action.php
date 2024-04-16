@@ -20,25 +20,73 @@ class shopBulkpurchasePluginFrontendProductsAction extends waViewAction
             $products = $userProductsModel->getProductsByListId($listId);
             $formattedProducts = [];
             foreach ($products as $product) {
-                // $productModel = new shopProductModel();
-                // $detailedProduct = $productModel->getById($product['product_id']);
                 $detailedProduct = $this->getProduct($product['product_id']);
-                
+
                 if ($detailedProduct) {
                     $formattedProducts[] = $detailedProduct;
                 }
             }
+            $categories = $this->getCategoryTree();
+            $categoriesWithProducts = $this->getCategoryTreeWithProducts($categories, $formattedProducts);
 
-            // Подготавливаем данные для шаблона
-            $this->view->assign('products', $formattedProducts);
+            $this->view->assign('categoriesWithProducts', $categoriesWithProducts);
+            $this->view->assign('products', $products);
         } else {
             // Если пользователь не авторизирован, перенаправляем на страницу авторизации
             $this->redirect(wa()->getRouteUrl('/frontend/my/login'));
         }
 
-        
+
         $this->view->assign('plugin_url', wa()->getAppStaticUrl('shop') . "plugins/bulkpurchase");
         $this->setLayout(new shopFrontendLayout());
+    }
+    public function getCategoryTreeWithProducts($categories, $products)
+    {
+        // Helper function to recursively assign products to categories
+        function assignProductsToCategories(&$categories, $products)
+        {
+            foreach ($categories as &$category) {
+                // Filter products that belong to the current category
+                $category['products'] = array_filter($products, function ($product) use ($category) {
+                    return $product['category_id'] == $category['id'];
+                });
+
+                // If there are child categories, recurse into them
+                if (!empty($category['children'])) {
+                    assignProductsToCategories($category['children'], $products);
+                }
+            }
+        }
+
+        // Assign products to categories recursively
+        assignProductsToCategories($categories, $products);
+
+        return $categories;
+    }
+
+
+    // Вспомогательный метод для построения дерева категорий
+    public function getCategoryTree()
+    {
+        $categoryModel = new shopCategoryModel();
+        $categories = $categoryModel->getAll();
+        return $this->buildCategoryTree($categories);
+    }
+
+    // Метод построения дерева категорий
+    private function buildCategoryTree($categories, $parentId = 0)
+    {
+        $branch = array();
+        foreach ($categories as $category) {
+            if ($category['parent_id'] == $parentId) {
+                $children = $this->buildCategoryTree($categories, $category['id']);
+                if ($children) {
+                    $category['children'] = $children;
+                }
+                $branch[] = $category;
+            }
+        }
+        return $branch;
     }
 
     public function getProduct($id)

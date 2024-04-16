@@ -7,6 +7,7 @@ return array (
   'handlers' => 
   array (
     'backend_menu' => 'backendMenu',
+    'backend_products' => 'backendProducts',
   ),
   'frontend' => true,
 );

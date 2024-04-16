@@ -120,16 +120,6 @@ $(document).ready(function () {
         });
     });
 
-    // Функция для добавления всех продуктов из выбранной категории
-    $('#category_select').on('change', function() {
-        var categoryId = $(this).val();
-        var customerId = $('#selected_customer_id').val();
-        // Если выбрана категория и определен ID покупателя
-        if (categoryId && customerId) {
-            addProductsByCategoryToCustomer(categoryId, customerId); // Вызываем функцию добавления
-        }
-    });
-
     // Функция для обработки выбора продукта
     function selectProduct(productId, productName) {
         var customerId = $('#selected_customer_id').val(); // Получаем ID выбранного покупателя
