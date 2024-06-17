@@ -6,6 +6,7 @@ class shopBulkpurchasePluginFrontendCreateorderController extends waJsonControll
     {
         $contact_id = $this->getUserId();
         $products = waRequest::post('products');
+        $comment = waRequest::post('comment') ? waRequest::post('comment') : '';
 
         $contact = new waContact($contact_id);
 
@@ -16,6 +17,7 @@ class shopBulkpurchasePluginFrontendCreateorderController extends waJsonControll
             'discount' => 0,
             'params' => [],
             'shipping' => NULL,
+            'comment' => $comment,
         ];
 
         try {

@@ -205,7 +205,11 @@
 .bulk-title {
   font-size: 16px;
 }
-
+@media (max-width: 768px) {
+  .bulk-title {
+    font-size: 14px;
+  }
+}
 .bulkpurchase-load-file-btns>*:not(:last-child) {
   margin-right: 10px;
 }
@@ -221,6 +225,13 @@
     */
   font-size: 12px;
   padding: 6px 10px;
+}
+@media (max-width: 768px) {
+
+  .bulkpurchase-btn {
+    font-size: 11px;
+    padding: 3px 105;
+  }
 }
 
 .bulkpurchase-btn--1c {
@@ -264,20 +275,27 @@
 }
 .cat-nav--wrap {
   background: #005239;
-  margin-top: -21px;
   padding-top: 10px;
   margin-bottom: 20px;
-  position: sticky;
-  top: 64px;
-  z-index: 2;
 }
 
 .bulkpurchase-products-table thead {
-  position: sticky;
-  top: 142px;
   background: #fff;
   z-index: 2;
-  /*position: relative;*/
+}
+@media (min-width: 1250px) {
+  .cat-nav--wrap {
+    margin-top: -21px;
+    position: sticky;
+    top: 64px;
+    z-index: 2;
+  }
+  
+  .bulkpurchase-products-table thead {
+    position: sticky;
+    z-index: 2;
+    /*position: relative;*/
+  }
 }
 
 .bulkpurchase-products-table thead::after {
@@ -292,6 +310,12 @@
 #themeOverride .cat-nav__item .button {
   background: transparent;
   padding: 0 20px 0 0;
+}
+@media (max-width: 768px) {
+  #themeOverride .cat-nav__item .button {
+    padding: 0 10px 0 0;
+    font-size: 13px;
+  }
 }
 
 #themeOverride .cat-nav__item .button:hover {
@@ -360,13 +384,18 @@
 .bulk-no-padding {
   padding: 0;
 }
-
-header.header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+@media (min-width: 1251px) {
+  header.header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
 }
-
+@media (max-width: 1250px) {
+  header.header {
+    margin-bottom: 0;
+  }
+}
 body {
   height: initial !important;
 }
@@ -592,4 +621,21 @@ tr.not-null {
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
+}
+.default-page>.container {
+  overflow: auto;
+}
+.bulkpurchase-products-table {
+  width: 1300px;
+}
+@media (max-width: 768px) {
+  table td, table th {
+    padding: 6px;
+  }
+  #themeOverride table td, #themeOverride table th {
+    font-size: 13px;
+  }
+  .bulkpurchase-products-table {
+    width: 1000px;
+  }
 }

@@ -29,7 +29,7 @@
 {/function}    
 
 {if !empty($products)}
-    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css?v1">
+    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css?v2">
     <div class="cat-nav--wrap">
         <div class="container">
             <div class="cat-nav__list">
@@ -45,133 +45,134 @@
         </div>
         <div class="bulkpurchase-load-file-btns">
         </div> *}
-        
-        <table class="bulkpurchase-products-table">
-            <thead>
-                <tr>
-                    <th class="bulk-no-border bulk-no-padding" colspan="4">
-                        {* <div class="bulkpurchase-load-file-btns">
-                            <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Посмотреть заказ</button>
-                        </div> *}
-                    </th>
-                    <th class="bulk-no-border bulk-title" colspan="3">Остаток на складе Москва</th>
-                    <th class="bulk-no-border bulk-title" colspan="3">Поступающие из Франции</th>
-                </tr>
-                <tr>
-                    <th class="bulk-no-border bulk-no-padding" colspan="4">
-                        <div class="bulkpurchase-load-file-btns">
-                            <button id="hide-zero-stock-msk" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Москва</button>
-                            <button id="hide-zero-stock-fr" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Франция</button>
-                            <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c{* bulkpurchase-btn--not-null*}">Посмотреть заказ</button>
-                        </div>
-                    </th>
-                    <th class="bulk-no-border bulk-no-bold">Вес кг.</th>
-                    <th class="bulk-no-border bulk-no-bold">Объём литры</th>
-                    <th class="bulk-no-border bulk-bold">Итого</th>
-                    <th class="bulk-no-border"></th>
-                    <th class="bulk-no-border"></th>
-                    <th class="bulk-no-border bulk-bold">Итого</th>
-                </tr>
-                <tr class="/*bulk-hidden-border*/">
-                    <th class="bulk-no-border bulk-no-padding" colspan="4">
-                        <div class="bulkpurchase-load-file-btns">
-                            <input type="file" id="file-input" accept=".xlsx, .xls">
-                            <button class="bulkpurchase-btn bulkpurchase-btn--1c" id="upload-button">Загрузить данные</button>
-                            <button class="bulkpurchase-btn bulkpurchase-btn--1c" id="export-to-excel">Выгрузить в Excel</button>
-                        </div>
-                    </th>
-                    <th class="js-th-weight-msk bulk-no-border bulk-bg"></th>
-                    <th class="js-th-obem-msk bulk-no-border bulk-bg"></th>
-                    <th class="js-th-total-msk bulk-no-border bulk-bg"></th>
-                    <th class="bulk-no-border"></th>
-                    <th class="bulk-no-border"></th>
-                    <th class="js-th-total-fr bulk-no-border bulk-bg"></th>
-                </tr>
-                <tr class="js-export">
-                    <th class="">Артикул</th>
-                    <th class="">Наименование</th>
-                    <th class="download-row">Описание товара</th>
-                    <th class="">Цена за штуку, ₽</th>
-                    <th class="">Остаток Москва, шт.</th>
-                    <th class="table__th__zaraz-msk">Заказ Москва, шт.</th>
-                    <th class="">Всего по артикулу, ₽</th>
-                    <th class="">Поступают из Франции, шт.</th>
-                    <th class="">Заказ на поступление, шт.</th>
-                    <th class="">Всего по артикулу, ₽</th>
-                </tr>
-            </thead>
-            <tbody>
-            
-                {function name=renderCategoryTree categories=[] path="" level=0 title=true}
-                    {foreach $categories as $category}
-                        {if $level == 0}
-                            {assign var="newPath" value=$path|cat:"<span data-cat-id='"|cat:$category['id']|cat:"'>"|cat:$category['name']|cat:"</span> -> "}
-                            {$title=true}
-                        {/if}
-                        {assign var="hasProducts" value=false}
-                        {if !empty($category['products'])}
-                            {assign var="hasProducts" value=true}
-                        {/if}
-                        
-                        {if $hasProducts || !empty($category['children'])}
+        {* <div class="bulkpurchase-products-table--wrap"> *}
+            <table class="bulkpurchase-products-table">
+                <thead>
+                    <tr>
+                        <th class="bulk-no-border bulk-no-padding" colspan="4">
+                            {* <div class="bulkpurchase-load-file-btns">
+                                <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Посмотреть заказ</button>
+                            </div> *}
+                        </th>
+                        <th class="bulk-no-border bulk-title" colspan="3">Остаток на складе Москва</th>
+                        <th class="bulk-no-border bulk-title" colspan="3">Поступающие из Франции</th>
+                    </tr>
+                    <tr>
+                        <th class="bulk-no-border bulk-no-padding" colspan="4">
+                            <div class="bulkpurchase-load-file-btns">
+                                <button id="hide-zero-stock-msk" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Москва</button>
+                                <button id="hide-zero-stock-fr" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Франция</button>
+                                <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c{* bulkpurchase-btn--not-null*}">Посмотреть заказ</button>
+                            </div>
+                        </th>
+                        <th class="bulk-no-border bulk-no-bold">Вес кг.</th>
+                        <th class="bulk-no-border bulk-no-bold">Объём литры</th>
+                        <th class="bulk-no-border bulk-bold">Итого</th>
+                        <th class="bulk-no-border"></th>
+                        <th class="bulk-no-border"></th>
+                        <th class="bulk-no-border bulk-bold">Итого</th>
+                    </tr>
+                    <tr class="/*bulk-hidden-border*/">
+                        <th class="bulk-no-border bulk-no-padding" colspan="4">
+                            <div class="bulkpurchase-load-file-btns">
+                                <input type="file" id="file-input" accept=".xlsx, .xls">
+                                <button class="bulkpurchase-btn bulkpurchase-btn--1c" id="upload-button">Загрузить данные</button>
+                                <button class="bulkpurchase-btn bulkpurchase-btn--1c" id="export-to-excel">Выгрузить в Excel</button>
+                            </div>
+                        </th>
+                        <th class="js-th-weight-msk bulk-no-border bulk-bg"></th>
+                        <th class="js-th-obem-msk bulk-no-border bulk-bg"></th>
+                        <th class="js-th-total-msk bulk-no-border bulk-bg"></th>
+                        <th class="bulk-no-border"></th>
+                        <th class="bulk-no-border"></th>
+                        <th class="js-th-total-fr bulk-no-border bulk-bg"></th>
+                    </tr>
+                    <tr class="js-export">
+                        <th class="">Артикул</th>
+                        <th class="">Наименование</th>
+                        <th class="download-row">Описание товара</th>
+                        <th class="">Цена за штуку, ₽</th>
+                        <th class="">Остаток Москва, шт.</th>
+                        <th class="table__th__zaraz-msk">Заказ Москва, шт.</th>
+                        <th class="">Всего по артикулу, ₽</th>
+                        <th class="">Поступают из Франции, шт.</th>
+                        <th class="">Заказ на поступление, шт.</th>
+                        <th class="">Всего по артикулу, ₽</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    {function name=renderCategoryTree categories=[] path="" level=0 title=true}
+                        {foreach $categories as $category}
+                            {if $level == 0}
+                                {assign var="newPath" value=$path|cat:"<span data-cat-id='"|cat:$category['id']|cat:"'>"|cat:$category['name']|cat:"</span> -> "}
+                                {$title=true}
+                            {/if}
+                            {assign var="hasProducts" value=false}
                             {if !empty($category['products'])}
-                                {if $title}
-                                <tr class="category-row">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="absolute">{$newPath|trim:' -> '}</td>
-                                </tr>
-                                {$title = false}
-                                {/if}
+                                {assign var="hasProducts" value=true}
+                            {/if}
                             
-                                {foreach $category['products'] as $product}
-                                    {$productFirstSkusArray = $product['skus']|@array_shift}
-                                    {* <script>
-                                        console.log({json_encode($productFirstSkusArray['sku'])})
-                                    </script> *}
-                                    {$productFirstSkus = $product['skus']|@array_keys|@array_shift}
-                                    {$stockMsc = $product['skus'][$productFirstSkus]['stock'][1]}
-                                    {$stockFr = $product['skus'][$productFirstSkus]['stock'][2]}
-                                    {if $product['price'] > 0} <!-- Проверка цены -->
-                                        <tr class="js-export js-export-total" data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
-                                            <td class="js-product-art" data-sku-id="{$productFirstSkus}" data-sku-name="{$productFirstSkusArray['sku']}">{$productFirstSkusArray['sku']}</td> <!-- Изменение здесь -->
-                                            <td class="js-product-name">
-                                                {$product.name}
-                                            </td>
-                                            <td class="download-row">
-                                                <a href="/wa-data/public/site/docs/productdesc/{$productFirstSkusArray['sku']}.pdf" class="download-icon" title="Скачать описание товара">
-                                                    <svg class="feather feather-download" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                                                    <span class="download-text">Скачать описание товара</span>
-                                                </a>
-                                            </td>
-                                            <td class="js-product-price bulk-td-price" data-price="{$product['price'] * $markupPercent}">{*shop_currency($product['price'] * $markupPercent, 'RUB', null, true)*}{$product['price'] * $markupPercent}</td>
-                                            <td class="js-product-stock-msk" data-stock-msk="{$stockMsc}">{if $stockMsc == NULL}Много{else}{$stockMsc}{/if}</td>
-                                            <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product.id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
-                                            <td class="js-product-total-msk">—</td>
-                                            <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
-                                            <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="{$stockFr}"{/if} value="0"></td>
-                                            <td class="js-product-total-fr">—</td>
-                                        </tr>
+                            {if $hasProducts || !empty($category['children'])}
+                                {if !empty($category['products'])}
+                                    {if $title}
+                                    <tr class="category-row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="absolute">{$newPath|trim:' -> '}</td>
+                                    </tr>
+                                    {$title = false}
                                     {/if}
-                                {/foreach}
+                                
+                                    {foreach $category['products'] as $product}
+                                        {$productFirstSkusArray = $product['skus']|@array_shift}
+                                        {* <script>
+                                            console.log({json_encode($productFirstSkusArray['sku'])})
+                                        </script> *}
+                                        {$productFirstSkus = $product['skus']|@array_keys|@array_shift}
+                                        {$stockMsc = $product['skus'][$productFirstSkus]['stock'][1]}
+                                        {$stockFr = $product['skus'][$productFirstSkus]['stock'][2]}
+                                        {if $product['price'] > 0} <!-- Проверка цены -->
+                                            <tr class="js-export js-export-total" data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
+                                                <td class="js-product-art" data-sku-id="{$productFirstSkus}" data-sku-name="{$productFirstSkusArray['sku']}">{$productFirstSkusArray['sku']}</td> <!-- Изменение здесь -->
+                                                <td class="js-product-name">
+                                                    {$product.name}
+                                                </td>
+                                                <td class="download-row">
+                                                    <a href="/wa-data/public/site/docs/productdesc/{$productFirstSkusArray['sku']}.pdf" class="download-icon" title="Скачать описание товара">
+                                                        <svg class="feather feather-download" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                                        <span class="download-text">Скачать описание товара</span>
+                                                    </a>
+                                                </td>
+                                                <td class="js-product-price bulk-td-price" data-price="{$product['price'] * $markupPercent}">{*shop_currency($product['price'] * $markupPercent, 'RUB', null, true)*}{$product['price'] * $markupPercent}</td>
+                                                <td class="js-product-stock-msk" data-stock-msk="{$stockMsc}">{if $stockMsc == NULL}Много{else}{$stockMsc}{/if}</td>
+                                                <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product.id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
+                                                <td class="js-product-total-msk">—</td>
+                                                <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
+                                                <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="{$stockFr}"{/if} value="0"></td>
+                                                <td class="js-product-total-fr">—</td>
+                                            </tr>
+                                        {/if}
+                                    {/foreach}
+                                {/if}
+                                {if !empty($category['children'])}
+                                    {call name=renderCategoryTree categories=$category['children'] path=$newPath  level=$level+1 title=$title}
+                                {/if}
                             {/if}
-                            {if !empty($category['children'])}
-                                {call name=renderCategoryTree categories=$category['children'] path=$newPath  level=$level+1 title=$title}
-                            {/if}
-                        {/if}
-                    {/foreach}
-                {/function}
-                {call name=renderCategoryTree categories=$categoriesWithProducts}
-            </tbody>
-        </table>
+                        {/foreach}
+                    {/function}
+                    {call name=renderCategoryTree categories=$categoriesWithProducts}
+                </tbody>
+            </table>
+        {* </div> *}
 
         <!-- Поле для комментария -->
         <div class="comment-section">
@@ -212,7 +213,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-    <script src="{$plugin_url}/js/FrontendProducts.js?v1"></script>
+    <script src="{$plugin_url}/js/FrontendProducts.js?v2"></script>
 {else}
     <div class="bulkpurchase-no-products">Нет доступных товаров.</div>
 {/if}
