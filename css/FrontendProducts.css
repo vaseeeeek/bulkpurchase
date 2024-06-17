@@ -205,11 +205,13 @@
 .bulk-title {
   font-size: 16px;
 }
+
 @media (max-width: 768px) {
   .bulk-title {
     font-size: 14px;
   }
 }
+
 .bulkpurchase-load-file-btns>*:not(:last-child) {
   margin-right: 10px;
 }
@@ -226,6 +228,7 @@
   font-size: 12px;
   padding: 6px 10px;
 }
+
 @media (max-width: 768px) {
 
   .bulkpurchase-btn {
@@ -258,21 +261,23 @@
   /* Белый текст */
   border: 1px solid #ffed00;
 }
+
 .bulkpurchase-btn--not-null {
   background: #00523947;
   border: 1px solid #0052399c;
 }
+
 .bulkpurchase-btn--not-null:hover {
   background: #0052399c;
   border: 1px solid #0052399c;
 }
+
 .bulkpurchase-btn--not-null.active-filter {
   background: #0052399c;
-  /* Зелёный фон */
   color: black;
-  /* Белый текст */
   border: 1px solid #0052399c;
 }
+
 .cat-nav--wrap {
   background: #005239;
   padding-top: 10px;
@@ -283,18 +288,19 @@
   background: #fff;
   z-index: 2;
 }
+
 @media (min-width: 1250px) {
+  .bulkpurchase-products-table thead {
+    position: sticky;
+    z-index: 2;
+    top: 142px;
+  }
+
   .cat-nav--wrap {
     margin-top: -21px;
     position: sticky;
     top: 64px;
     z-index: 2;
-  }
-  
-  .bulkpurchase-products-table thead {
-    position: sticky;
-    z-index: 2;
-    /*position: relative;*/
   }
 }
 
@@ -311,6 +317,7 @@
   background: transparent;
   padding: 0 20px 0 0;
 }
+
 @media (max-width: 768px) {
   #themeOverride .cat-nav__item .button {
     padding: 0 10px 0 0;
@@ -384,6 +391,7 @@
 .bulk-no-padding {
   padding: 0;
 }
+
 @media (min-width: 1251px) {
   header.header {
     position: sticky;
@@ -391,11 +399,13 @@
     z-index: 2;
   }
 }
+
 @media (max-width: 1250px) {
   header.header {
     margin-bottom: 0;
   }
 }
+
 body {
   height: initial !important;
 }
@@ -598,13 +608,16 @@ td.absolute {
   display: block;
   margin: 0 auto;
 }
+
 .js-product-stock-msk,
 .js-product-stock-fr {
   font-weight: 600;
 }
+
 tr.not-null {
   background: #00523947;
 }
+
 .comment-section {
   margin-top: 20px;
 }
@@ -622,19 +635,29 @@ tr.not-null {
   border-radius: 4px;
   resize: vertical;
 }
-.default-page>.container {
-  overflow: auto;
+
+@media (max-width: 1250px) {
+  .default-page>.container {
+    overflow: auto;
+  }
+
+  .bulkpurchase-products-table {
+    width: 1300px;
+  }
 }
-.bulkpurchase-products-table {
-  width: 1300px;
-}
+
 @media (max-width: 768px) {
-  table td, table th {
+
+  table td,
+  table th {
     padding: 6px;
   }
-  #themeOverride table td, #themeOverride table th {
+
+  #themeOverride table td,
+  #themeOverride table th {
     font-size: 13px;
   }
+
   .bulkpurchase-products-table {
     width: 1000px;
   }
