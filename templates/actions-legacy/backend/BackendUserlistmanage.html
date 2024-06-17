@@ -16,9 +16,14 @@
     <div id="selected_customer_display" class="selected-customer" style="display: none;"></div>
     <input type="hidden" id="selected_customer_id" name="selected_customer_id">
 
+    <div class="markup-field" style="display: none;">
+        <label for="markup_percent">Процент надбавки (%):</label>
+        <input type="number" id="markup_percent" name="markup_percent" placeholder="Введите процент" step="0.01">
+    </div>
+
     <!-- Список товаров выбранного покупателя -->
     <div id="customer_products_list"></div>
-
+    
     <!-- Добавление товаров -->
     <div class="add-products">
         <label for="product_search">Добавить товар по ID или наименованию:</label>

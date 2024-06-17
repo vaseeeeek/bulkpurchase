@@ -5,6 +5,7 @@ return array(
         'user_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
         'created_at' => array('datetime', 'null' => 0),
         'updated_at' => array('datetime', 'null' => 0),
+        'markup_percent' => array('decimal', '10,2', 'null' => 0, 'default' => '0.00'),
         ':keys' => array(
             'PRIMARY' => 'list_id',
             'user_id' => 'user_id',

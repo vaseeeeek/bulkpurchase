@@ -1,3 +1,21 @@
+#themeOverride table td,
+#themeOverride table th {
+  border: initial;
+}
+
+#themeOverride table tbody td,
+#themeOverride table tbody th {
+  border-left: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.bulkpurchase-products-table {
+  border-collapse: separate;
+  /* Don't collapse */
+  border-spacing: 0;
+  border-bottom: 2px solid #000;
+}
+
 .bulkpurchase-frontend .bulkpurchase-products-table,
 .bulkpurchase-modal-table {
   width: 100%;
@@ -18,77 +36,543 @@
   background-color: #f2f2f2;
 }
 
+#themeOverride .bulkpurchase-products-table tbody td:nth-child(7),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(4) th:nth-child(7)
+
+/*,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(3) th:nth-child(4),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(2) th:nth-child(4),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(1) th:nth-child(2)*/
+  {
+  border-right: 2px solid #000;
+}
+
+#themeOverride .bulkpurchase-products-table tbody td:nth-child(1),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(4) th:nth-child(1)
+
+/*,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(3) th:nth-child(1),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(2) th:nth-child(1),
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(1) th:nth-child(1)*/
+  {
+  border-left: 2px solid #000;
+}
+
+#themeOverride .bulkpurchase-products-table tbody td:last-child,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(4) th:last-child
+
+/*,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(3) th:last-child,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(2) th:last-child,
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(1) th:last-child*/
+  {
+  border-right: 2px solid #000;
+}
+
+#themeOverride .bulkpurchase-products-table thead tr:nth-child(4) th {
+  border-top: 2px solid #000;
+}
+
+#themeOverride .bulkpurchase-products-table tbody tr:last-child td {
+  /* border-bottom: 2px solid #000; */
+}
+
 .bulkpurchase-frontend .bulkpurchase-products-table tbody tr:nth-child(odd),
 .bulkpurchase-modal-table tbody tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
 
 .bulkpurchase-modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Removed the duplicate, kept RGBA for transparency */
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,
+      0,
+      0,
+      0.4);
+  /* Removed the duplicate, kept RGBA for transparency */
 }
 
 .bulkpurchase-modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
 .bulkpurchase-close-modal {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .bulkpurchase-close-modal:hover,
 .bulkpurchase-close-modal:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .bulkpurchase-tabs {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 }
 
 .bulkpurchase-tab-button {
-    background-color: #f1f1f1;
-    color: #000;
-    cursor: pointer;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease;
-    border: none;
-    outline: none;
-    font-weight: bold;
-    margin: 0 5px;
-    line-height: 1;
-    opacity: 0.6; /* Default state */
+  background-color: #f1f1f1;
+  color: #000;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  margin: 0 5px;
+  line-height: 1;
+  opacity: 0.6;
+  /* Default state */
 }
 
 .bulkpurchase-tab-button.bulkpurchase-active,
 .bulkpurchase-tab-button:hover {
-    background-color: #007bff;
-    color: #ffffff;
-    opacity: 1; /* Active & hover state */
+  background-color: #005239;
+  color: #ffffff;
+  opacity: 1;
+  /* Active & hover state */
 }
 
-.bulkpurchase-tab-button:not(:first-child) {
-    border-left: 1px solid #ccc;
-}
+/* .bulkpurchase-tab-button:not(:first-child) {
+  border-left: 1px solid #ccc;
+} */
 
 .bulkpurchase-tab-content {
-    display: none;
-    padding: 20px 0;
-    border-top: none;
+  display: none;
+  padding: 20px 0;
+  border-top: none;
+}
+
+.cat-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cat-nav__item {
+  margin: 0 10px 10px 0;
+}
+
+.category-row td {
+  background: #f4ecc5;
+  text-align: center;
+}
+
+.bulkpurchase-load-file-btns {
+  /* margin-bottom: 20px;
+    border-bottom: 1px solid rgba(222,222,222,1);
+    padding-bottom: 20px; */
+  display: flex;
+  align-items: center;
+}
+
+.bulk-no-border {
+  border: 0;
+}
+
+.bulk-bold {
+  font-weight: 600;
+}
+
+.bulk-bg {
+  background: #000;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  box-sizing: border-box;
+  white-space: pre;
+}
+
+.bulk-no-bold {
+  font-weight: 400;
+}
+
+.bulk-title {
+  font-size: 16px;
+}
+
+.bulkpurchase-load-file-btns>*:not(:last-child) {
+  margin-right: 10px;
+}
+
+.bulkpurchase-btn {
+  /*
+    background-color: #f2f2f2;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    */
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.bulkpurchase-btn--1c {
+  background: rgb(229, 229, 229);
+  background: linear-gradient(0deg,
+      rgba(229, 229, 229, 1) 0%,
+      rgba(255, 255, 255, 1) 50%);
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+.bulkpurchase-btn:hover {
+  background-color: #ffed00;
+  /* Зелёный фон */
+  color: black;
+  /* Белый текст */
+  border: 1px solid #ffed00;
+}
+
+.active-filter {
+  background: #ffed00;
+  /* Зелёный фон */
+  color: black;
+  /* Белый текст */
+  border: 1px solid #ffed00;
+}
+.bulkpurchase-btn--not-null {
+  background: #00523947;
+  border: 1px solid #0052399c;
+}
+.bulkpurchase-btn--not-null:hover {
+  background: #0052399c;
+  border: 1px solid #0052399c;
+}
+.bulkpurchase-btn--not-null.active-filter {
+  background: #0052399c;
+  /* Зелёный фон */
+  color: black;
+  /* Белый текст */
+  border: 1px solid #0052399c;
+}
+.cat-nav--wrap {
+  background: #005239;
+  margin-top: -21px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 64px;
+  z-index: 2;
+}
+
+.bulkpurchase-products-table thead {
+  position: sticky;
+  top: 142px;
+  background: #fff;
+  z-index: 2;
+  /*position: relative;*/
+}
+
+.bulkpurchase-products-table thead::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #fff;
+  z-index: 1;
+}
+
+#themeOverride .cat-nav__item .button {
+  background: transparent;
+  padding: 0 20px 0 0;
+}
+
+#themeOverride .cat-nav__item .button:hover {
+  color: #ffed00;
+}
+
+.header-top--links {
+  display: none;
+}
+
+.highlighted {
+  background-color: #ffff99;
+  /* Ярко-желтый фон для подсветки */
+  transition: background-color 2s ease-in-out;
+  /* Плавное изменение цвета фона */
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  /* Максимальная ширина поля поиска */
+}
+
+#search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  height: 40px;
+}
+
+#search-input:focus {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  /* Скрыт по умолчанию */
+}
+
+.search-results div {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-results div:hover {
+  background-color: #f0f0f0;
+}
+
+.bulk-no-padding {
+  padding: 0;
+}
+
+header.header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+body {
+  height: initial !important;
+}
+
+.bulk-hidden-border {
+  border: hidden;
+}
+
+.bulk-td-price {
+  white-space: pre;
+}
+
+table tr.js-export th {
+  border-top: 0;
+}
+
+th.table__th__zaraz-msk {
+  min-width: 75px;
+}
+
+.download-icon {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+.download-button {
+  display: inline-block;
+  padding: 3px 5px;
+  background-color: #005239;
+  color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.download-icon:hover .download-button {
+  background-color: #005239;
+}
+
+.download-icon .download-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  width: 170px;
+}
+
+.download-icon:hover .download-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+tr.category-row {
+  position: relative;
+  height: 39px;
+}
+
+td.absolute {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  border: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-right: none !important; */
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.download-row {
+  text-align: center;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-success {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 40px 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Стили для модального окна "Заказ оформлен" */
+#order-confirmation-modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#order-confirmation-modal .bulkpurchase-modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+}
+
+#order-confirmation-modal .bulkpurchase-close-modal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#order-confirmation-modal .bulkpurchase-close-modal:hover,
+#order-confirmation-modal .bulkpurchase-close-modal:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#order-confirmation-modal h2 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 24px;
+}
+
+#order-confirmation-modal p {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+#order-confirmation-modal .bulkpurchase-order-button {
+  background-color: #005239;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+#order-confirmation-modal .bulkpurchase-order-button:hover {
+  background-color: #00412d;
+}
+
+.delete-item {
+  font-size: 12px;
+  padding: 5px 15px;
+  display: block;
+  margin: 0 auto;
+}
+.js-product-stock-msk,
+.js-product-stock-fr {
+  font-weight: 600;
+}
+tr.not-null {
+  background: #00523947;
 }

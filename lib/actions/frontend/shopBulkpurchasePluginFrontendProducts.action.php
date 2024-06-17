@@ -17,25 +17,34 @@ class shopBulkpurchasePluginFrontendProductsAction extends waViewAction
             $userProductsModel = new shopBulkpurchaseUserProductsModel();
             $listsModel = new shopBulkpurchaseListsModel();
             $listId = $listsModel->ensureListForUser($userId);
+            $markupPercent = $listsModel->getMarkupPercent($listId) / 100.0 + 1;
             $products = $userProductsModel->getProductsByListId($listId);
             $formattedProducts = [];
             foreach ($products as $product) {
                 $detailedProduct = $this->getProduct($product['product_id']);
 
                 if ($detailedProduct) {
+                    $features = $detailedProduct->features;
+                    if ($features['weight']) {
+                        $features['weight'] = $features['weight']->shopDimensionValuevalue;
+                    }
+                    if ($features['obem']) {
+                        $features['obem'] = preg_replace('/\D/', '', $features['obem']);
+                    }
+                    $detailedProduct['features'] = $features;
                     $formattedProducts[] = $detailedProduct;
                 }
             }
             $categories = $this->getCategoryTree();
             $categoriesWithProducts = $this->getCategoryTreeWithProducts($categories, $formattedProducts);
-
+            
             $this->view->assign('categoriesWithProducts', $categoriesWithProducts);
-            $this->view->assign('products', $products);
+            $this->view->assign('markupPercent', $markupPercent);
+            $this->view->assign('products', $formattedProducts);
         } else {
             // Если пользователь не авторизирован, перенаправляем на страницу авторизации
             $this->redirect(wa()->getRouteUrl('/frontend/my/login'));
         }
-
 
         $this->view->assign('plugin_url', wa()->getAppStaticUrl('shop') . "plugins/bulkpurchase");
         $this->setLayout(new shopFrontendLayout());
@@ -70,6 +79,12 @@ class shopBulkpurchasePluginFrontendProductsAction extends waViewAction
     {
         $categoryModel = new shopCategoryModel();
         $categories = $categoryModel->getAll();
+    
+        // Сортировка категорий по полю left_key
+        usort($categories, function($a, $b) {
+            return $a['left_key'] <=> $b['left_key'];
+        });
+        
         return $this->buildCategoryTree($categories);
     }
 
@@ -95,8 +110,8 @@ class shopBulkpurchasePluginFrontendProductsAction extends waViewAction
         $skus = $product->skus;
         foreach ($skus as &$sku) {
             $sku['price_html'] = shop_currency_html($sku['price'], $product['currency']);
-            $sku['orig_available'] = $sku['available'];
-            $sku['available'] = $this->isProductSkuAvailable($product, $sku);
+            /*$sku['orig_available'] = $sku['available'];
+            $sku['available'] = $this->isProductSkuAvailable($product, $sku);*/
         }
         unset($sku);
         $product->skus = $skus;
