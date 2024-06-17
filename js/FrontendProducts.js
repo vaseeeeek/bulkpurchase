@@ -1,194 +1,3 @@
-class BulkpurchaseModal {
-    constructor(modalSelector, tabButtonSelector, tabContentSelector) {
-        this.$modal = $(modalSelector);
-        this.$tabButtons = $(tabButtonSelector);
-        this.$tabContents = $(tabContentSelector);
-        this.init();
-    }
-
-    init() {
-        this.handleOpenModal();
-        this.handleCloseModal();
-        this.handleSwitchTab();
-        this.activateFirstTab();
-        this.handleEditAndDelete();
-    }
-
-    handleOpenModal() {
-        $('#bulkpurchase-open-order-modal').click(() => {
-            this.populateOrderTabs();
-            this.$modal.show();
-        });
-    }
-
-    handleCloseModal() {
-        $('.bulkpurchase-close-modal').click(() => {
-            this.closeModal();
-        });
-    }
-    closeModal() {
-        this.$modal.hide();
-    }
-    handleSwitchTab() {
-        this.$tabButtons.click((event) => {
-            const $button = $(event.currentTarget);
-            const tabId = $button.data('for-tab');
-
-            this.$tabContents.hide();
-            this.$tabButtons.removeClass('bulkpurchase-active');
-            $button.addClass('bulkpurchase-active');
-
-            $(`.bulkpurchase-tab-content[data-tab="${tabId}"]`).show();
-        });
-    }
-
-    activateFirstTab() {
-        const firstTabId = this.$tabButtons.first().data('for-tab');
-        $(`.bulkpurchase-tab-content[data-tab="${firstTabId}"]`).show();
-        this.$tabButtons.first().addClass('bulkpurchase-active');
-    }
-    handleEditAndDelete() {
-        this.$modal.on('click', '.delete-item', function () {
-            const $row = $(this).closest('tr');
-            $row.remove();
-            removeOrderData($row.data('product-id'), $row.data('sku-id'));
-        });
-    }
-
-    populateOrderTabs() {
-        // Очищаем предыдущее содержимое вкладок
-        $('.bulkpurchase-tab-content').empty();
-
-        // Добавляем структуру таблицы для каждой вкладки
-        const tableStructure = `
-            <table class="bulkpurchase-modal-table">
-                <thead>
-                    <tr>
-                        <th>Артикул</th>
-                        <th>Наименование</th>
-                        <th>Цена за штуку</th>
-                        <th>Количество</th>
-                        <th>Всего</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        `;
-
-        $('.bulkpurchase-tab-content[data-tab="1"]').append(tableStructure);
-        $('.bulkpurchase-tab-content[data-tab="2"]').append(tableStructure);
-
-        // Проходим по всем строкам таблицы
-        $('.bulkpurchase-products-table tbody tr').each((index, row) => {
-            const $row = $(row);
-            const productId = $row.data('product-id');
-            const name = $row.find('.js-product-name').text();
-            const skuId = $row.find('.js-product-art').data('sku-id'); // Изменение здесь
-            const skuName = $row.find('.js-product-art').data('sku-name'); // Изменение здесь
-            const price = $row.find('.js-product-price').data('price');
-            const qtyMsk = $row.find('.js-product-qty-msk input').val();
-            const qtyFr = $row.find('.js-product-qty-fr input').val();
-            const totalPriceMsk = (parseInt(qtyMsk) * parseFloat(price)).toFixed(2);
-            const totalPriceFr = (parseInt(qtyFr) * parseFloat(price)).toFixed(2);
-
-            // Добавляем строки в таблицу Москва
-            if (parseInt(qtyMsk) > 0) {
-                $('.bulkpurchase-tab-content[data-tab="1"] .bulkpurchase-modal-table tbody').append(
-                    `<tr data-product-id="${productId}" data-sku-id="${skuId}">
-                        <td>${skuName}</td> <!-- Изменение здесь -->
-                        <td>${name}</td>
-                        <td>${price} ₽</td>
-                        <td class="item-quantity">${qtyMsk}</td>
-                        <td class="item-total">${totalPriceMsk} ₽</td>
-                    </tr>`
-                );
-            }
-
-            // Добавляем строки в таблицу Франция
-            if (parseInt(qtyFr) > 0) {
-                $('.bulkpurchase-tab-content[data-tab="2"] .bulkpurchase-modal-table tbody').append(
-                    `<tr data-product-id="${productId}" data-sku-id="${skuId}">
-                        <td>${skuName}</td> <!-- Изменение здесь -->
-                        <td>${name}</td>
-                        <td>${price} ₽</td>
-                        <td class="item-quantity">${qtyFr}</td>
-                        <td class="item-total">${totalPriceFr} ₽</td>
-                    </tr>`
-                );
-            }
-        });
-
-        // this.updateTotal();
-        // this.handleQuantityChange();
-    }
-
-    handleQuantityChange() {
-        this.$modal.on('input', '.item-quantity', function () {
-            const $row = $(this).closest('tr');
-            const price = parseFloat($row.find('td').eq(2).text().replace(' ₽', ''));
-            const qty = $(this).val();
-            const total = (price * qty).toFixed(2);
-            $row.find('.item-total').text(`${total} ₽`);
-        });
-    }
-
-    updateTotal() {
-        $('.bulkpurchase-tab-content').each(function () {
-            let total = 0;
-            $(this).find('.item-total').each(function () {
-                total += parseFloat($(this).text().replace(' ₽', ''));
-            });
-            $(this).find('.total-sum').text(`Итого: ${total.toFixed(2)} ₽`);
-        });
-    }
-
-    sendOrder(tabId) {
-        let orderItems = [];
-        $(`.bulkpurchase-tab-content[data-tab="${tabId}"] .bulkpurchase-modal-table tbody tr`).each(function () {
-            let $row = $(this);
-            let productId = $row.data('product-id');
-            let skuId = $row.data('sku-id');
-            let name = $row.find('td').eq(1).text();
-            let qty = parseInt($row.find('.item-quantity').text());
-            let price = parseFloat($row.find('td').eq(2).text().replace(' ₽', ''));
-
-            orderItems.push({
-                product_id: productId,
-                sku_id: skuId,
-                name: name,
-                quantity: qty,
-                price: price,
-                type: 'product',
-            });
-        });
-
-        if (!orderItems.length) {
-            console.log('Нет товаров для заказа.');
-            return;
-        }
-
-        $.ajax({
-            url: '/bulkpurchase-createorder/', // Убедитесь, что URL верный
-            method: 'POST',
-            dataType: 'json',
-            data: {
-                products: orderItems
-            },
-            success: function (response) {
-                /*
-                console.log('Ответ сервера: ', response);
-                alert('Заказ успешно создан!');
-                */
-            },
-            error: function (xhr) {
-                /*
-                console.error('Ошибка при создании заказа: ', xhr.responseText);
-                alert('Ошибка при создании заказа.');
-                */
-            }
-        });
-    }
-}
 class BulkpurchaseProductTable {
     constructor(selector) {
         this.$table = $(selector);
@@ -207,6 +16,8 @@ class BulkpurchaseProductTable {
         });
         loadOrderDataFromCookies();
         this.formatPrices(); // Форматируем цены при загрузке
+
+        $('#bulkpurchase-open-order-modal').click(() => this.sendOrder());
     }
 
     formatNumber(num) {
@@ -270,7 +81,7 @@ class BulkpurchaseProductTable {
             $input.val(maxQty);
         }
     }
-    
+
     toggleNotNullClass($row) {
         const qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
         const qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
@@ -281,7 +92,119 @@ class BulkpurchaseProductTable {
             $row.removeClass('not-null');
         }
     }
+
+    sendOrder() {
+        let orderItemsMsk = [];
+        let orderItemsFr = [];
+        const comment = $('#order-comment').val(); // Получаем значение комментария
+
+        this.$table.find('tbody tr').each(function () {
+            let $row = $(this);
+            let productId = $row.data('product-id');
+            let skuId = $row.find('.js-product-art').data('sku-id');
+            let name = $row.find('.js-product-name').text();
+            let qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
+            let qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
+            let price = parseFloat($row.find('.js-product-price').data('price'));
+
+            if (qtyMsk > 0) {
+                orderItemsMsk.push({
+                    product_id: productId,
+                    sku_id: skuId,
+                    name: name,
+                    quantity: qtyMsk,
+                    price: price,
+                    type: 'product'
+                });
+            }
+
+            if (qtyFr > 0) {
+                orderItemsFr.push({
+                    product_id: productId,
+                    sku_id: skuId,
+                    name: name,
+                    quantity: qtyFr,
+                    price: price,
+                    type: 'product'
+                });
+            }
+        });
+
+        if (!orderItemsMsk.length && !orderItemsFr.length) {
+            console.log('Нет товаров для заказа.');
+            return;
+        }
+        console.log(orderItemsMsk);
+        // Создание заказа для московского склада
+        if (orderItemsMsk.length) {
+            $.ajax({
+                url: '/bulkpurchase-createorder/', // Убедитесь, что URL верный для московского склада
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    products: orderItemsMsk,
+                    comment: comment // Отправляем комментарий на сервер
+                },
+                success: function (response) {
+                    console.log('Заказ для московского склада успешно создан: ', response);
+                },
+                error: function (xhr) {
+                    console.error('Ошибка при создании заказа для московского склада: ', xhr.responseText);
+                    alert('Ошибка при создании заказа для московского склада.');
+                }
+            });
+        }
+        
+        // Создание заказа для французского склада
+        if (orderItemsFr.length) {
+            $.ajax({
+                url: '/bulkpurchase-createorder/', // Убедитесь, что URL верный для французского склада
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    products: orderItemsFr,
+                    comment: comment 
+                },
+                success: function (response) {
+                    console.log('Заказ для французского склада успешно создан: ', response);
+                },
+                error: function (xhr) {
+                    console.error('Ошибка при создании заказа для французского склада: ', xhr.responseText);
+                    alert('Ошибка при создании заказа для французского склада.');
+                }
+            });
+        }
+
+        // Сброс таблицы заказов после отправки
+        this.resetOrderTable();
+    }
+
+    resetOrderTable() {
+        // Обнуляем значения в таблице
+        $('.js-product-qty-msk input, .js-product-qty-fr input').val(0);
+        $('.js-product-qty-msk input, .js-product-qty-fr input').last().trigger('input');
+
+        $('.js-product-total-fr').each(function () {
+            $(this).html('—');
+        })
+        $('.js-product-total-msk').each(function () {
+            $(this).html('—');
+        })
+
+        // Отображаем сообщение об успешном заказе
+        this.openConfirmationModal();
+    }
+
+    openConfirmationModal() {
+        $('#order-confirmation-modal').show();
+    }
+
+    closeConfirmationModal() {
+        $('#order-confirmation-modal').hide();
+    }
+
 }
+
 // При загрузке страницы восстановить данные по количеству
 function loadOrderDataFromCookies() {
     const cookieValue = document.cookie
@@ -301,45 +224,14 @@ function loadOrderDataFromCookies() {
         });
     }
 }
-function openConfirmationModal() {
-    $('#order-confirmation-modal').show();
-}
 
-function closeConfirmationModal() {
-    $('#order-confirmation-modal').hide();
-}
-
-function resetOrderTable() {
-    // Обнуляем значения в таблице
-    $('.js-product-qty-msk input, .js-product-qty-fr input').val(0);
-    $('.js-product-qty-msk input, .js-product-qty-fr input').last().trigger('input');
-
-    $('.js-product-total-fr').each(function () {
-        $(this).html('—');
-    })
-    $('.js-product-total-msk').each(function () {
-        $(this).html('—');
-    })
-
-    // Отображаем сообщение об успешном заказе
-    openConfirmationModal();
-}
 $(document).ready(function () {
-    new BulkpurchaseProductTable('.bulkpurchase-products-table');
-    const modal = new BulkpurchaseModal('#bulkpurchase-orderModal', '.bulkpurchase-tab-button', '.bulkpurchase-tab-content');
-
-    $('#bulkpurchase-place-order').click(function () {
-        modal.sendOrder('1'); // Отправка данных о заказе для Москвы
-        modal.sendOrder('2'); // Отправка данных о заказе для Франции
-        modal.closeModal();
-        resetOrderTable();
-    });
+    const bulkPurchaseTable = new BulkpurchaseProductTable('.bulkpurchase-products-table');
 
     $('#close-confirmation-modal, .bulkpurchase-close-modal').click(function () {
-        closeConfirmationModal();
+        bulkPurchaseTable.closeConfirmationModal();
     });
 });
-
 
 $(document).ready(function () {
     // Обработчик клика на кнопки категорий

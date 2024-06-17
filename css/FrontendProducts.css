@@ -576,3 +576,20 @@ td.absolute {
 tr.not-null {
   background: #00523947;
 }
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.comment-section textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}

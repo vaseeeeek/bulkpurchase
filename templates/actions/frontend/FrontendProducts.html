@@ -29,7 +29,7 @@
 {/function}    
 
 {if !empty($products)}
-    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css">
+    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css?v1">
     <div class="cat-nav--wrap">
         <div class="container">
             <div class="cat-nav__list">
@@ -50,9 +50,9 @@
             <thead>
                 <tr>
                     <th class="bulk-no-border bulk-no-padding" colspan="4">
-                        <div class="bulkpurchase-load-file-btns">
+                        {* <div class="bulkpurchase-load-file-btns">
                             <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Посмотреть заказ</button>
-                        </div>
+                        </div> *}
                     </th>
                     <th class="bulk-no-border bulk-title" colspan="3">Остаток на складе Москва</th>
                     <th class="bulk-no-border bulk-title" colspan="3">Поступающие из Франции</th>
@@ -62,7 +62,7 @@
                         <div class="bulkpurchase-load-file-btns">
                             <button id="hide-zero-stock-msk" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Москва</button>
                             <button id="hide-zero-stock-fr" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Франция</button>
-                            <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c bulkpurchase-btn--not-null">Отобразить заказанное</button>
+                            <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c{* bulkpurchase-btn--not-null*}">Посмотреть заказ</button>
                         </div>
                     </th>
                     <th class="bulk-no-border bulk-no-bold">Вес кг.</th>
@@ -173,6 +173,17 @@
             </tbody>
         </table>
 
+        <!-- Поле для комментария -->
+        <div class="comment-section">
+            <label for="order-comment">Комментарий к заказу:</label>
+            <textarea id="order-comment" rows="4" cols="50"></textarea>
+        </div>
+        
+        <!-- Кнопка "Оформить заказ" -->
+        <div class="bulkpurchase-load-file-btns">
+            <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Оформить заказ</button>
+        </div>
+
         <!-- Модальное окно -->
         <div id="bulkpurchase-orderModal" class="bulkpurchase-modal" style="display: none;">
             <div class="bulkpurchase-modal-content">
@@ -201,7 +212,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-    <script src="{$plugin_url}/js/FrontendProducts.js"></script>
+    <script src="{$plugin_url}/js/FrontendProducts.js?v1"></script>
 {else}
     <div class="bulkpurchase-no-products">Нет доступных товаров.</div>
 {/if}
