@@ -1,128 +1,126 @@
 <style>
-:root {
-    --bulkpurchase-bg-modal: rgba(0,0,0,0.4);
-    --bulkpurchase-bg-content: #fff;
-    --bulkpurchase-bg-button: #5cb85c;
-    --bulkpurchase-bg-button-hover: #4cae4c;
-    --bulkpurchase-bg-selected: #e2e2ff;
-    --bulkpurchase-bg-results: #f9f9f9;
-    --bulkpurchase-border-radius: 4px;
-    --bulkpurchase-border: 1px solid #ccc;
-    --bulkpurchase-color-close: #888;
-    --bulkpurchase-color-close-hover: #333;
-    --bulkpurchase-text-color: #333;
-    --bulkpurchase-padding: 10px;
-    --bulkpurchase-margin-top: 10px;
-}
+    :root {
+        --bulkpurchase-bg-modal: rgba(0,0,0,0.4);
+        --bulkpurchase-bg-content: #fff;
+        --bulkpurchase-bg-button: #5cb85c;
+        --bulkpurchase-bg-button-hover: #4cae4c;
+        --bulkpurchase-bg-selected: #e2e2ff;
+        --bulkpurchase-bg-results: #f9f9f9;
+        --bulkpurchase-border-radius: 4px;
+        --bulkpurchase-border: 1px solid #ccc;
+        --bulkpurchase-color-close: #888;
+        --bulkpurchase-color-close-hover: #333;
+        --bulkpurchase-text-color: #333;
+        --bulkpurchase-padding: 10px;
+        --bulkpurchase-margin-top: 10px;
+    }
 
-.bulkpurchase-modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    z-index: 132;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: var(--bulkpurchase-bg-modal);
-}
+    .bulkpurchase-modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        z-index: 132;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: var(--bulkpurchase-bg-modal);
+    }
 
-.bulkpurchase-modal-content {
-    background-color: var(--bulkpurchase-bg-content);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    width: 90%;
-    max-width: 600px;
-}
+    .bulkpurchase-modal-content {
+        background-color: var(--bulkpurchase-bg-content);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        width: 90%;
+        max-width: 600px;
+    }
 
-.bulkpurchase-close {
-    float: right;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--bulkpurchase-color-close);
-    margin: -10px -10px 0 0;
-}
+    .bulkpurchase-close {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--bulkpurchase-color-close);
+        margin: -10px -10px 0 0;
+    }
 
-.bulkpurchase-close:hover {
-    color: var(--bulkpurchase-color-close-hover);
-}
+    .bulkpurchase-close:hover {
+        color: var(--bulkpurchase-color-close-hover);
+    }
 
-#bulkpurchase-selected-products {
-    background: #f8f8f8;
-    border-radius: var(--bulkpurchase-border-radius);
-    padding: var(--bulkpurchase-padding);
-    margin-top: var(--bulkpurchase-margin-top);
-}
+    #bulkpurchase-selected-products {
+        background: #f8f8f8;
+        border-radius: var(--bulkpurchase-border-radius);
+        padding: var(--bulkpurchase-padding);
+        margin-top: var(--bulkpurchase-margin-top);
+    }
 
-#bulkpurchase-selected-products-list {
-    list-style: none;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-}
+    #bulkpurchase-selected-products-list {
+        list-style: none;
+        padding: 0;
+        max-height: 200px;
+        overflow-y: auto;
+    }
 
-#bulkpurchase-selected-products-list li {
-    padding: 8px;
-    border-bottom: 1px solid #eaeaea;
-    margin-bottom: 5px;
-}
+    #bulkpurchase-selected-products-list li {
+        padding: 8px;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 5px;
+    }
 
-#bulkpurchase-selected-products-list li:last-child {
-    border-bottom: none;
-}
+    #bulkpurchase-selected-products-list li:last-child {
+        border-bottom: none;
+    }
 
-#bulkpurchase-customer-search, #bulkpurchase-search-customer, #bulkpurchase-add-products {
-    width: 100%;
-    padding: 10px 15px;
-    margin-top: var(--bulkpurchase-margin-top);
-    box-sizing: border-box;
-    border: var(--bulkpurchase-border);
-    border-radius: var(--bulkpurchase-border-radius);
-}
+    #bulkpurchase-customer-search, #bulkpurchase-search-customer, #bulkpurchase-add-products, #bulkpurchase-add-products-all {
+        width: 100%;
+        padding: 10px 15px;
+        margin-top: var(--bulkpurchase-margin-top);
+        box-sizing: border-box;
+        border: var(--bulkpurchase-border);
+        border-radius: var(--bulkpurchase-border-radius);
+    }
 
-#bulkpurchase-search-customer, #bulkpurchase-add-products {
-    background-color: var(--bulkpurchase-bg-button);
-    color: white;
-    border-color: var(--bulkpurchase-bg-button-hover);
-    cursor: pointer;
-}
+    #bulkpurchase-search-customer, #bulkpurchase-add-products, #bulkpurchase-add-products-all {
+        background-color: var(--bulkpurchase-bg-button);
+        color: white;
+        border-color: var(--bulkpurchase-bg-button-hover);
+        cursor: pointer;
+    }
 
-#bulkpurchase-search-customer:hover, #bulkpurchase-add-products:hover {
-    background-color: var(--bulkpurchase-bg-button-hover);
-}
+    #bulkpurchase-search-customer:hover, #bulkpurchase-add-products:hover, #bulkpurchase-add-products-all:hover {
+        background-color: var(--bulkpurchase-bg-button-hover);
+    }
 
-#bulkpurchase-search-results {
-    max-height: 150px;
-    overflow-y: auto;
-    background: var(--bulkpurchase-bg-results);
-    border-radius: var(--bulkpurchase-border-radius);
-    border: var(--bulkpurchase-border);
-    padding: var(--bulkpurchase-padding);
-    margin-top: var(--bulkpurchase-margin-top);
-}
+    #bulkpurchase-search-results {
+        max-height: 150px;
+        overflow-y: auto;
+        background: var(--bulkpurchase-bg-results);
+        border-radius: var(--bulkpurchase-border-radius);
+        border: var(--bulkpurchase-border);
+        padding: var(--bulkpurchase-padding);
+        margin-top: var(--bulkpurchase-margin-top);
+    }
 
-#bulkpurchase-search-results div {
-    padding: 5px;
-    cursor: pointer;
-}
+    #bulkpurchase-search-results div {
+        padding: 5px;
+        cursor: pointer;
+    }
 
-#bulkpurchase-search-results div:hover {
-    background-color: #e1e1e1;
-}
+    #bulkpurchase-search-results div:hover {
+        background-color: #e1e1e1;
+    }
 
-#selected_customer_display {
-    color: var(--bulkpurchase-text-color);
-    background: var(--bulkpurchase-bg-selected);
-    padding: 8px;
-    border-radius: var(--bulkpurchase-border-radius);
-    margin-top: var(--bulkpurchase-margin-top);
-    display: block;
-}
-
-
+    #selected_customer_display {
+        color: var(--bulkpurchase-text-color);
+        background: var(--bulkpurchase-bg-selected);
+        padding: 8px;
+        border-radius: var(--bulkpurchase-border-radius);
+        margin-top: var(--bulkpurchase-margin-top);
+        display: block;
+    }
 </style>
 
 <div id="bulkpurchase-toolbar" class="block">
@@ -151,6 +149,7 @@
         </div>
 
         <button id="bulkpurchase-add-products">Добавить выбранные товары</button>
+        <button id="bulkpurchase-add-products-all">Добавить товары ко всем покупателям</button>
     </div>
 </div>
 
@@ -281,6 +280,37 @@
                 }
             });
         });
+
+        $('#bulkpurchase-add-products-all').click(function() {
+            var productIds = $('#product-list input[type="checkbox"]:checked').map(function() {
+                return $(this).closest('tr').data('product-id');
+            }).get();
+
+            if (productIds.length === 0) {
+                alert('Нет выбранных товаров.');
+                return;
+            }
+
+            $.ajax({
+                url: '?plugin=bulkpurchase&action=addproductsforall',
+                type: 'POST',
+                data: {
+                    product_ids: productIds
+                },
+                success: function(response) {
+                    if (response.status === 'ok') {
+                        alert('Товары успешно добавлены ко всем покупателям.');
+                        $('#bulkpurchase-modal').hide();
+                    } else {
+                        alert('Ошибка: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Ошибка при отправке запроса.');
+                }
+            });
+        });
+
     });
 
     

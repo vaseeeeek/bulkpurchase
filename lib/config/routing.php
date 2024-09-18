@@ -2,13 +2,18 @@
 return array (
   'bulkpurchase/*' => 'frontend/',
   'my/products/' => array(
-    'plugin' => 'bulkpurchase', // Укажите идентификатор вашего плагина
+    'plugin' => 'bulkpurchase', 
     'module' => 'frontend',
-    'action' => 'products', // Укажите действие, которое должно обрабатываться
+    'action' => 'products', 
   ),
   'bulkpurchase-createorder/' => array(
-    'plugin' => 'bulkpurchase', // Укажите идентификатор вашего плагина
+    'plugin' => 'bulkpurchase', 
     'module' => 'frontend',
-    'action' => 'createorder', // Укажите действие, которое должно обрабатываться
+    'action' => 'createorder', 
+  ),
+  'bulkpurchase/addproductsforall/' => array(
+      'plugin' => 'bulkpurchase',
+      'module' => 'backend',
+      'action' => 'addproductstoall', 
   ),
 );
