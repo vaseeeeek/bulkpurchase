@@ -1,4 +1,5 @@
 {strip}
+{$version = '29'}
 {function name=renderCatNav categories=[] path="" level=0 title=true}
     {foreach $categories as $category}
         {if $level == 0}
@@ -29,7 +30,7 @@
 {/function}    
 
 {if !empty($products)}
-    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css?v2">
+    <link rel="stylesheet" href="{$plugin_url}/css/FrontendProducts.css?v{$version}">
     <div class="cat-nav--wrap">
         <div class="container">
             <div class="cat-nav__list">
@@ -49,7 +50,16 @@
             <table class="bulkpurchase-products-table">
                 <thead>
                     <tr>
-                        <th class="bulk-no-border bulk-no-padding" colspan="4">
+                        <th class="bulk-no-border bulk-no-padding" colspan="1">
+                            <div class="bulkpurchase-load-file-btns">
+                                <button id="hide-zero-stock-msk" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Москва</button>
+                                <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c{* bulkpurchase-btn--not-null*}">Посмотреть заказ</button>
+                            </div>
+                        </th>
+                        <th class="bulk-no-border bulk-no-padding" colspan="2">
+                            <button id="bulkpurchase-scroll-to-order" class="bulkpurchase-btn bulkpurchase-btn--zametnaya">Перейти к оформлению</button>
+                        </th>
+                        <th class="bulk-no-border bulk-no-padding" colspan="1">
                             {* <div class="bulkpurchase-load-file-btns">
                                 <button id="bulkpurchase-open-order-modal" class="bulkpurchase-btn">Посмотреть заказ</button>
                             </div> *}
@@ -60,9 +70,8 @@
                     <tr>
                         <th class="bulk-no-border bulk-no-padding" colspan="4">
                             <div class="bulkpurchase-load-file-btns">
-                                <button id="hide-zero-stock-msk" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Москва</button>
                                 <button id="hide-zero-stock-fr" class="bulkpurchase-btn bulkpurchase-btn--1c">Только с остатком Франция</button>
-                                <button id="show-ordered" class="bulkpurchase-btn bulkpurchase-btn--1c{* bulkpurchase-btn--not-null*}">Посмотреть заказ</button>
+                                <button id="clear-all-products" class="bulkpurchase-btn bulkpurchase-btn--1c">Обнулить заказ</button>
                             </div>
                         </th>
                         <th class="bulk-no-border bulk-no-bold">Вес кг.</th>
@@ -141,7 +150,7 @@
                                         {$stockMsc = $product['skus'][$productFirstSkus]['stock'][1]}
                                         {$stockFr = $product['skus'][$productFirstSkus]['stock'][2]}
                                         {if $product['price'] > 0} <!-- Проверка цены -->
-                                            <tr class="js-export js-export-total" data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
+                                            <tr class="js-export js-export-total" data-overflow="{$stockFr}" data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
                                                 <td class="js-product-art" data-sku-id="{$productFirstSkus}" data-sku-name="{$productFirstSkusArray['sku']}">{$productFirstSkusArray['sku']}</td> <!-- Изменение здесь -->
                                                 <td class="js-product-name">
                                                     {$product.name}
@@ -157,7 +166,7 @@
                                                 <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product.id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
                                                 <td class="js-product-total-msk">—</td>
                                                 <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
-                                                <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="{$stockFr}"{/if} value="0"></td>
+                                                <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="999{*{$stockFr}*}"{/if} value="0"></td>
                                                 <td class="js-product-total-fr">—</td>
                                             </tr>
                                         {/if}
@@ -177,7 +186,7 @@
         <!-- Поле для комментария -->
         <div class="comment-section">
             <label for="order-comment">Комментарий к заказу:</label>
-            <textarea id="order-comment" rows="4" cols="50"></textarea>
+            <textarea id="order-comment" rows="4" cols="50" placeholder="Если у вас есть вопросы или пожелания по заказу, то укажите их в этом поле..."></textarea>
         </div>
         
         <!-- Кнопка "Оформить заказ" -->
@@ -213,7 +222,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-    <script src="{$plugin_url}/js/FrontendProducts.js?v2"></script>
+    <script src="{$plugin_url}/js/FrontendProducts.js?v{$version}"></script>
 {else}
     <div class="bulkpurchase-no-products">Нет доступных товаров.</div>
 {/if}

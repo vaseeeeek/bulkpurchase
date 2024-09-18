@@ -120,7 +120,11 @@
 }
 
 .bulkpurchase-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   margin: 20px 0;
 }
@@ -130,6 +134,7 @@
   color: #000;
   cursor: pointer;
   padding: 10px 20px;
+  -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
   border: none;
   outline: none;
@@ -159,7 +164,10 @@
 }
 
 .cat-nav__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
@@ -176,7 +184,11 @@
   /* margin-bottom: 20px;
     border-bottom: 1px solid rgba(222,222,222,1);
     padding-bottom: 20px; */
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -194,6 +206,7 @@
   color: #fff;
   font-size: 16px;
   line-height: 1;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   white-space: pre;
 }
@@ -239,11 +252,22 @@
 
 .bulkpurchase-btn--1c {
   background: rgb(229, 229, 229);
+  background: -webkit-gradient(linear,
+      left bottom, left top,
+      from(rgba(229, 229, 229, 1)),
+      color-stop(50%, rgba(255, 255, 255, 1)));
   background: linear-gradient(0deg,
       rgba(229, 229, 229, 1) 0%,
       rgba(255, 255, 255, 1) 50%);
   color: #000;
   border: 1px solid #ccc;
+}
+
+.bulkpurchase-btn--zametnaya {
+  background: red;
+  width: calc(100% - 20px);
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .bulkpurchase-btn:hover {
@@ -293,7 +317,7 @@
   .bulkpurchase-products-table thead {
     position: sticky;
     z-index: 2;
-    top: 142px;
+    /* top: 142px; */
   }
 
   .cat-nav--wrap {
@@ -336,6 +360,7 @@
 .highlighted {
   background-color: #ffff99;
   /* Ярко-желтый фон для подсветки */
+  -webkit-transition: background-color 2s ease-in-out;
   transition: background-color 2s ease-in-out;
   /* Плавное изменение цвета фона */
 }
@@ -352,12 +377,17 @@
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  -webkit-transition: -webkit-box-shadow 0.3s ease;
+  transition: -webkit-box-shadow 0.3s ease;
   transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, -webkit-box-shadow 0.3s ease;
   height: 40px;
 }
 
 #search-input:focus {
+  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -381,6 +411,7 @@
 .search-results div {
   padding: 8px 12px;
   cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
 }
 
@@ -452,11 +483,13 @@ th.table__th__zaraz-msk {
   position: absolute;
   top: -35px;
   left: 50%;
+  -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   background-color: #000;
   color: #fff;
   padding: 5px;
   border-radius: 5px;
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   width: 170px;
 }
@@ -479,10 +512,17 @@ td.absolute {
   height: 100%;
   width: 100%;
   background: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   /* border-right: none !important; */
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: transparent;
 }
@@ -498,8 +538,14 @@ td.absolute {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   z-index: 1000;
 }
@@ -510,15 +556,30 @@ td.absolute {
   border-radius: 50%;
   width: 120px;
   height: 120px;
+  -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
 
-@keyframes spin {
+@-webkit-keyframes spin {
   0% {
+    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
@@ -528,10 +589,12 @@ td.absolute {
   position: fixed;
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 40px 100px;
   border-radius: 10px;
+  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   font-size: 20px;
@@ -593,6 +656,7 @@ td.absolute {
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
   font-size: 16px;
   margin-top: 10px;
@@ -638,11 +702,14 @@ tr.not-null {
 
 @media (max-width: 1250px) {
   .default-page>.container {
+    -webkit-overflow-scrolling: touch;
     overflow: auto;
   }
 
   .bulkpurchase-products-table {
     width: 1300px;
+    min-width: 1300px;
+    max-width: 1300px;
   }
 }
 
@@ -660,5 +727,35 @@ tr.not-null {
 
   .bulkpurchase-products-table {
     width: 1000px;
+    min-width: 1000px;
+    max-width: 1000px;
   }
+}
+
+.not-null .not-null-column {
+  /*background-color: #ededed;*/
+}
+
+/* CSS стили для активных колонок */
+.active-msk-column {
+  /* background-color: #0052399c;
+  color: white; */
+}
+
+.active-fr-column {
+  background-color: #ededed;
+  color: #000;
+}
+
+/* CSS стили для строк */
+.active-msk-row {
+  background-color: #0052399c;
+}
+
+.active-fr-row {
+  background-color: white;
+}
+
+.active-both-row {
+  background-color: #0052399c;
 }

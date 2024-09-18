@@ -51,7 +51,8 @@ class shopBulkpurchasePlugin extends shopPlugin
                     $features['weight'] = $features['weight']->shopDimensionValuevalue;
                 }
                 if ($features['obem']) {
-                    $features['obem'] = preg_replace('/\D/', '', $features['obem']);
+                    /*$features['obem'] = preg_replace('/\D/', '', $features['obem']);*/
+                    $features['obem'] = preg_replace('/[^0-9.]/', '', $features['obem']);
                 }
                 $detailedProduct['features'] = $features;
                 $formattedProducts[] = $detailedProduct;

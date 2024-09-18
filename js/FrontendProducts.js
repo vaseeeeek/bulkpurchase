@@ -5,20 +5,108 @@ class BulkpurchaseProductTable {
     }
 
     init() {
+        const headerHeight = $('header')[0].offsetHeight;
+        const navHeight = $('.cat-nav--wrap')[0].offsetHeight;
+        const boxThead = $('.bulkpurchase-products-table thead');
+
         this.$table.on('input', '.js-product-qty-msk input, .js-product-qty-fr input', (event) => {
             const $input = $(event.target);
             const $row = $input.closest('tr');
             this.checkMaxQuantity($input);
             this.updateTotalForProduct($row);
             this.updateAggregateValues();
-            this.toggleNotNullClass($row);
-            saveOrderDataToCookies();
+            this.toggleRowHighlight($row); // Добавлено для управления выделением строк и колонок
         });
+
+
         loadOrderDataFromCookies();
         this.formatPrices(); // Форматируем цены при загрузке
 
         $('#bulkpurchase-open-order-modal').click(() => this.sendOrder());
+        $('#bulkpurchase-scroll-to-order').click(() => this.scrollToSendOrder());
+
+        boxThead.css('top', `${headerHeight + navHeight}px`);
     }
+
+    toggleRowHighlight($row) {
+        const qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
+        const qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
+    
+        // Сначала сбрасываем все классы
+        $row.removeClass('active-msk-row active-fr-row active-both-row');
+        $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').removeClass('active-msk-column');
+        $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').removeClass('active-fr-column');
+        $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').css('background-color', '');
+    
+        if (qtyMsk > 0 && qtyFr > 0) {
+            $row.addClass('active-both-row');
+            $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').addClass('active-msk-column');
+            $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').addClass('active-fr-column').css('background-color', '#ededed');
+        } else if (qtyMsk > 0) {
+            $row.addClass('active-msk-row');
+            $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').addClass('active-msk-column');
+            $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').css('background-color', 'white');
+        } else if (qtyFr > 0) {
+            $row.addClass('active-fr-row');
+            $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').addClass('active-fr-column');
+        }
+    }
+    
+
+
+    highlightColumns() {
+        const $rows = this.$table.find('tbody tr');
+        $rows.each((index, row) => {
+            const $row = $(row);
+            const qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
+            const qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
+
+            // Сначала сбрасываем все классы
+            $row.removeClass('active-msk-row active-fr-row active-both-row');
+            $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').removeClass('active-msk-column');
+            $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').removeClass('active-fr-column');
+
+            if (this.isMskActive) {
+                $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').addClass('active-msk-column');
+                if (qtyMsk > 0) {
+                    $row.addClass('active-msk-row');
+                }
+            }
+
+            if (this.isFrActive) {
+                $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').addClass('active-fr-column');
+                if (qtyFr > 0) {
+                    if ($row.hasClass('active-msk-row')) {
+                        $row.addClass('active-both-row').removeClass('active-msk-row');
+                    } else {
+                        $row.addClass('active-fr-row');
+                    }
+                }
+            }
+        });
+    }
+
+    toggleNotNullColumnClass() {
+        this.$table.find('tbody tr').each(function () {
+            const $row = $(this);
+
+            const qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
+            const qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
+
+            if (qtyMsk > 0) {
+                $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').addClass('not-null-column');
+            } else {
+                $row.find('td:nth-child(5), td:nth-child(6), td:nth-child(7)').removeClass('not-null-column');
+            }
+
+            if (qtyFr > 0) {
+                $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').addClass('not-null-column');
+            } else {
+                $row.find('td:nth-child(8), td:nth-child(9), td:nth-child(10)').removeClass('not-null-column');
+            }
+        });
+    }
+
 
     formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -91,11 +179,14 @@ class BulkpurchaseProductTable {
         } else {
             $row.removeClass('not-null');
         }
+        this.highlightColumns(); // Добавляем вызов метода для выделения колонок и строк
     }
+
 
     sendOrder() {
         let orderItemsMsk = [];
         let orderItemsFr = [];
+        let orderItemsFrOverflowed = [];
         const comment = $('#order-comment').val(); // Получаем значение комментария
 
         this.$table.find('tbody tr').each(function () {
@@ -106,7 +197,8 @@ class BulkpurchaseProductTable {
             let qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
             let qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
             let price = parseFloat($row.find('.js-product-price').data('price'));
-
+            let overflow = $row.data('overflow');
+            let overflowed = 0;
             if (qtyMsk > 0) {
                 orderItemsMsk.push({
                     product_id: productId,
@@ -117,16 +209,41 @@ class BulkpurchaseProductTable {
                     type: 'product'
                 });
             }
-
+            //overflow является количеством товара из франции которое есть
+            //qtyFr это количество выбранное пользователем
+            //overflowed это количество товара которое вышло за пределы наличия
+            //получается, что в случае наличия товара и выхода за его пределы будут вызываться оба массива
             if (qtyFr > 0) {
-                orderItemsFr.push({
-                    product_id: productId,
-                    sku_id: skuId,
-                    name: name,
-                    quantity: qtyFr,
-                    price: price,
-                    type: 'product'
-                });
+                console.log(productId);
+                console.log(overflow);
+                console.log(price);
+                if (qtyFr < overflow) {
+                    overflowed = 0;
+                } else {
+                    overflowed = qtyFr - overflow;
+                    qtyFr = overflow;
+                }
+                if (overflowed > 0) {
+                    orderItemsFrOverflowed.push({
+                        product_id: productId,
+                        sku_id: skuId,
+                        name: name,
+                        quantity: overflowed,
+                        price: price,
+                        type: 'product'
+                    });
+                }
+                if (qtyFr > 0) {
+                    orderItemsFr.push({
+                        product_id: productId,
+                        sku_id: skuId,
+                        name: name,
+                        quantity: qtyFr,
+                        price: price,
+                        type: 'product'
+                    });
+                }
+                
             }
         });
 
@@ -154,7 +271,7 @@ class BulkpurchaseProductTable {
                 }
             });
         }
-        
+
         // Создание заказа для французского склада
         if (orderItemsFr.length) {
             $.ajax({
@@ -163,7 +280,7 @@ class BulkpurchaseProductTable {
                 dataType: 'json',
                 data: {
                     products: orderItemsFr,
-                    comment: comment 
+                    comment: comment
                 },
                 success: function (response) {
                     console.log('Заказ для французского склада успешно создан: ', response);
@@ -174,7 +291,25 @@ class BulkpurchaseProductTable {
                 }
             });
         }
-
+        // Создание заказа для французского склада в ситуации когда заказали товар с нулевым остатком
+        if (orderItemsFrOverflowed.length) {
+            $.ajax({
+                url: '/bulkpurchase-createorder/', // Убедитесь, что URL верный для французского склада
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    products: orderItemsFrOverflowed,
+                    comment: comment
+                },
+                success: function (response) {
+                    console.log('Заказ для французского склада (без остатка) успешно создан: ', response);
+                },
+                error: function (xhr) {
+                    console.error('Ошибка при создании заказа для французского склада: ', xhr.responseText);
+                    alert('Ошибка при создании заказа для французского склада.');
+                }
+            });
+        }
         // Сброс таблицы заказов после отправки
         this.resetOrderTable();
     }
@@ -203,6 +338,15 @@ class BulkpurchaseProductTable {
         $('#order-confirmation-modal').hide();
     }
 
+    scrollToSendOrder() {
+        if (!$('#show-ordered').hasClass('active-filter')) {
+            $('#show-ordered').click();
+        }
+
+        var hiddenElement = document.getElementById("bulkpurchase-open-order-modal");
+
+        hiddenElement.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
 }
 
 // При загрузке страницы восстановить данные по количеству
@@ -225,6 +369,7 @@ function loadOrderDataFromCookies() {
     }
 }
 
+
 $(document).ready(function () {
     const bulkPurchaseTable = new BulkpurchaseProductTable('.bulkpurchase-products-table');
 
@@ -238,6 +383,11 @@ $(document).ready(function () {
     $('.cat-nav__item .button').click(function () {
         var catId = $(this).data('cat-id');
         var $target = $('.bulkpurchase-products-table tr span[data-cat-id="' + catId + '"]');
+        const btnFilter = $('#show-ordered');
+
+        if (btnFilter.hasClass('active-filter')) {
+            btnFilter.trigger('click');
+        }
 
         if ($target.length) {
 
@@ -542,3 +692,34 @@ $(document).ready(function () {
         }
     });
 });
+$(document).on('ready', function() {
+    $('#clear-all-products').on('click', function(){
+        $('.bulkpurchase-products-table').append('<div id="clear-products-modal" class="bulkpurchase-modal"><div class="bulkpurchase-modal-content" style="width: 45%">' +
+        '<span class="bulkpurchase-close-modal">×</span><h2>Вы точно хотите обнулить все заказанные товары?</h2>' + 
+        '<div style="display: flex;justify-content: space-evenly"><button id="close-clear-modal" class="bulkpurchase-order-button">Отмена</button><button id="append-clear" class="bulkpurchase-order-button">Да</button></div>' +
+        '</div></div>'); 
+        $(document).on('click', '#clear-products-modal .bulkpurchase-close-modal', function(){
+            $(this).parent().parent().remove();
+        });
+        $(document).on('click', '#clear-products-modal #close-clear-modal', function(){
+            $(this).parent().parent().parent().remove();
+        });
+        $(document).on('click', '#clear-products-modal #append-clear', function(){
+            $('.js-product-qty-msk input, .js-product-qty-fr input').val(0);
+            $('.js-product-qty-msk input, .js-product-qty-fr input').last().trigger('input');
+            $('.js-product-total-fr').each(function () {
+                $(this).html('—');
+            });
+            $('.js-product-total-msk').each(function () {
+                $(this).html('—');
+            });
+            $('.active-msk-row').removeClass('active-msk-row');
+            $('.active-fr-column').removeClass('active-fr-column');
+            $('.bulkpurchase-products-table').append('<div id="bulk-popup-cleared">Заказ обнулен</div>');
+            $(this).parent().parent().parent().remove();
+            setTimeout(function(){
+                $('#bulk-popup-cleared').remove();
+            }, 2000);
+        });
+    });
+})
