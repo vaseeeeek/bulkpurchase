@@ -1,5 +1,7 @@
 {strip}
-{$version = '29'}
+{$notSaleProducts = $wa->shop->productSet("bestsellers")}
+{assign var="noDiscountProductIds" value=$notSaleProducts|@array_column:'id'}
+{$version = '30'}
 {function name=renderCatNav categories=[] path="" level=0 title=true}
     {foreach $categories as $category}
         {if $level == 0}
@@ -143,9 +145,6 @@
                                 
                                     {foreach $category['products'] as $product}
                                         {$productFirstSkusArray = $product['skus']|@array_shift}
-                                        {* <script>
-                                            console.log({json_encode($productFirstSkusArray['sku'])})
-                                        </script> *}
                                         {$productFirstSkus = $product['skus']|@array_keys|@array_shift}
                                         {$stockMsc = $product['skus'][$productFirstSkus]['stock'][1]}
                                         {$stockFr = $product['skus'][$productFirstSkus]['stock'][2]}
@@ -161,8 +160,14 @@
                                                         <span class="download-text">Скачать описание товара</span>
                                                     </a>
                                                 </td>
-                                                <td class="js-product-price bulk-td-price" data-price="{$product['price'] * $markupPercent}">{*shop_currency($product['price'] * $markupPercent, 'RUB', null, true)*}{$product['price'] * $markupPercent}</td>
-                                                <td class="js-product-stock-msk" data-stock-msk="{$stockMsc}">{if $stockMsc == NULL}Много{else}{$stockMsc}{/if}</td>
+                                                <td class="js-product-price bulk-td-price" data-price="{if $markupPercent < 1 && in_array($product.id,$noDiscountProductIds)}{$product['price']}{else}{$product['price'] * $markupPercent}{/if}">
+                                                    {if $markupPercent < 1 && in_array($product.id,$noDiscountProductIds)}
+                                                        {$product['price']}
+                                                    {else}
+                                                        {$product['price'] * $markupPercent}
+                                                    {/if}
+                                                </td>
+                                                                                         <td class="js-product-stock-msk" data-stock-msk="{$stockMsc}">{if $stockMsc == NULL}Много{else}{$stockMsc}{/if}</td>
                                                 <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product.id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
                                                 <td class="js-product-total-msk">—</td>
                                                 <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
